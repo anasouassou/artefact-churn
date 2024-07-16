@@ -1,0 +1,371 @@
+<<<<<<< HEAD
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Assurance Company Churn Predictor</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #0F1624; /* Dark background color */
+            color: #cbd5e0; /* Default text color for the body */
+            font-family: 'Arial', sans-serif; /* Base font family */
+        }
+        .container {
+            border-radius: 10px;
+            padding: 150px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+        }
+        textarea.form-control {
+            color: #000000; /* Text color */
+            background-color: #ffffff; /* Background color (optional, if you want to match the dark theme) */
+            border: 1px solid #000000; /* Border color to match the text color (optional) */
+            font-family: 'Arial', sans-serif; /* Font family to match the overall design */
+            padding: 10px; /* Padding inside the textarea */
+            border-radius: 5px; /* Rounded corners (optional) */
+            resize: vertical; /* Allow vertical resizing */
+        }
+
+        textarea.form-control::placeholder {
+            color: #000000; /* Placeholder text color to match */
+            opacity: 0.6; /* Slightly dim the placeholder text */
+        }
+
+        /* Define the gradient color */
+        .to-purple-500 {
+            background: linear-gradient(90deg, hsl(0, 0%, 100%), #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+        p {
+            text-align: left;
+            margin: 0 auto;
+            max-width: 800px; /* Adjust as needed */
+            line-height: 1.6;
+            color: #cbd5e0; /* Lighter text color */
+        }
+        .dataframe {
+            width: 100%;
+            margin-top: 20px;
+        }
+        .btn-primary {
+            background-color: #77537c;
+            border-color: #007bff;
+            padding: 10px 20px;
+        }
+        .btn-primary:hover {
+            background-color: #77537c;
+            border-color: #0056b3;
+        }
+        .btn-success {
+            background-color: #77537c;
+            border-color: #007bff;
+            padding: 10px 20px;
+        }
+        .btn-success:hover {
+            background-color: #77537c;
+            border-color: #0056b3;
+        }
+
+        /* Hover Navbar CSS */
+        .hover-navbar {
+            background-color: #0F1624;
+            overflow: hidden;
+            position: fixed; /* Make it stick to the top */
+            top: 0;
+            width: 100%;
+            transition: top 0.3s;
+            z-index: 1000; /* Ensure it is above other elements */
+        }
+
+        .hover-navbar ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .hover-navbar ul li {
+            float: left;
+        }
+
+        .hover-navbar ul li a {
+            display: block;
+            color: #cbd5e0;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .hover-navbar ul li a:hover {
+            background-color: #77537c;
+            color: #fff;
+        }
+
+        /* Additional container padding to prevent content from being hidden behind the navbar */
+        .container {
+            padding-top: 80px; /* Adjust this based on the height of your navbar */
+        }
+        .nav-bar-top {
+            background: linear-gradient(90deg, #e2e0eb, #b48edb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.5em; /* Adjust as needed */
+            font-weight: bold;
+            display: inline-block;
+            margin: 0 10px; /* Add margin to space out the list items */
+            padding: 10px; /* Add padding for better click area */
+            position: relative; /* Position relative for z-index */
+            z-index: 1;
+        }
+
+        /* Hover effect for nav bar items */
+        .nav-bar-top:hover {
+            background-color: rgb(109, 27, 112); /* Black background on hover */
+            -webkit-background-clip: padding-box; /* Reset text clip on hover */
+            -webkit-text-fill-color: rgb(0, 0, 0); /* White text color on hover */
+            border-radius: 5px; /* Optional: Add rounded corners on hover */
+            z-index: 2; /* Ensure it is above other elements on hover */
+        }
+
+        /* Anchor tag styles */
+        .nav-bar-top a {
+            text-decoration: none; /* Remove underline from links */
+            color: inherit; /* Inherit color from li */
+            display: block; /* Make the link fill the li */
+            padding: 10px; /* Match padding for better click area */
+        }
+        /* Style the table within the #map div */
+    </style>
+</head>
+<body>
+<nav class="hover-navbar">
+    <ul>
+        <li><a href="/" class="nav-bar-top">Home</a></li>
+        <li><a href="index" class="nav-bar-top">Churn Analysis</a></li>
+    </ul>
+</nav>
+<div class="container">
+    <h1 class="mb-2 bg-gradient-to-b from-amber-50 to-purple-500 bg-clip-text text-2xl font-bold text-transparent sm:mb-4 sm:text-5xl sm:leading-tight">Assurance Company Churn Predictor</h1>
+    <form method="post" class="mt-3 mb-3">
+        <div class="form-group">
+            <label for="user_input">Enter the details (e.g., "we are WAFA, what are the nearest assurance companies from 55, Bd Abdelmoumen, Casablanca, Grand Casablanca 20029 within a radius of 5km"):</label>
+            <textarea class="form-control" id="user_input" name="user_input" rows="4"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+    {% if nearest_result %}
+        <h3 class="mb-2 bg-gradient-to-b from-amber-50 to-purple-500 bg-clip-text text-2xl font-bold text-transparent sm:mb-4 sm:text-5xl sm:leading-tight">Our Nearest Assurance Agency</h3>
+        <p>{{ nearest_result }}</p>
+
+        <h3 class="mb-2 bg-gradient-to-b from-amber-50 to-purple-500 bg-clip-text text-2xl font-bold text-transparent sm:mb-4 sm:text-5xl sm:leading-tight">{{ surrounding_count }} Surrounding Assurance agencies Grouped by Company Name :</h3>
+        <div>
+            {{ grouped_counts | safe }}
+        </div>
+
+        <h3 class="mb-2 bg-gradient-to-b from-amber-50 to-purple-500 bg-clip-text text-2xl font-bold text-transparent sm:mb-4 sm:text-5xl sm:leading-tight">Map</h3>
+        <div id="map">
+            {{ map_html | safe }}
+        </div>
+
+        <a href="{{ url_for('download_file', surrounding_csv=surrounding_csv) }}" class="btn btn-success mt-3">Download data for surrounding companies</a>
+    {% endif %}
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Assurance Company Churn Predictor</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #0F1624; /* Dark background color */
+            color: #cbd5e0; /* Default text color for the body */
+            font-family: 'Arial', sans-serif; /* Base font family */
+        }
+        .container {
+            border-radius: 10px;
+            padding: 150px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+        }
+        textarea.form-control {
+            color: #000000; /* Text color */
+            background-color: #ffffff; /* Background color (optional, if you want to match the dark theme) */
+            border: 1px solid #000000; /* Border color to match the text color (optional) */
+            font-family: 'Arial', sans-serif; /* Font family to match the overall design */
+            padding: 10px; /* Padding inside the textarea */
+            border-radius: 5px; /* Rounded corners (optional) */
+            resize: vertical; /* Allow vertical resizing */
+        }
+
+        textarea.form-control::placeholder {
+            color: #000000; /* Placeholder text color to match */
+            opacity: 0.6; /* Slightly dim the placeholder text */
+        }
+
+        /* Define the gradient color */
+        .to-purple-500 {
+            background: linear-gradient(90deg, hsl(0, 0%, 100%), #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+        p {
+            text-align: left;
+            margin: 0 auto;
+            max-width: 800px; /* Adjust as needed */
+            line-height: 1.6;
+            color: #cbd5e0; /* Lighter text color */
+        }
+        .dataframe {
+            width: 100%;
+            margin-top: 20px;
+        }
+        .btn-primary {
+            background-color: #77537c;
+            border-color: #007bff;
+            padding: 10px 20px;
+        }
+        .btn-primary:hover {
+            background-color: #77537c;
+            border-color: #0056b3;
+        }
+        .btn-success {
+            background-color: #77537c;
+            border-color: #007bff;
+            padding: 10px 20px;
+        }
+        .btn-success:hover {
+            background-color: #77537c;
+            border-color: #0056b3;
+        }
+
+        /* Hover Navbar CSS */
+        .hover-navbar {
+            background-color: #0F1624;
+            overflow: hidden;
+            position: fixed; /* Make it stick to the top */
+            top: 0;
+            width: 100%;
+            transition: top 0.3s;
+            z-index: 1000; /* Ensure it is above other elements */
+        }
+
+        .hover-navbar ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .hover-navbar ul li {
+            float: left;
+        }
+
+        .hover-navbar ul li a {
+            display: block;
+            color: #cbd5e0;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .hover-navbar ul li a:hover {
+            background-color: #77537c;
+            color: #fff;
+        }
+
+        /* Additional container padding to prevent content from being hidden behind the navbar */
+        .container {
+            padding-top: 80px; /* Adjust this based on the height of your navbar */
+        }
+        .nav-bar-top {
+            background: linear-gradient(90deg, #e2e0eb, #b48edb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.5em; /* Adjust as needed */
+            font-weight: bold;
+            display: inline-block;
+            margin: 0 10px; /* Add margin to space out the list items */
+            padding: 10px; /* Add padding for better click area */
+            position: relative; /* Position relative for z-index */
+            z-index: 1;
+        }
+
+        /* Hover effect for nav bar items */
+        .nav-bar-top:hover {
+            background-color: rgb(109, 27, 112); /* Black background on hover */
+            -webkit-background-clip: padding-box; /* Reset text clip on hover */
+            -webkit-text-fill-color: rgb(0, 0, 0); /* White text color on hover */
+            border-radius: 5px; /* Optional: Add rounded corners on hover */
+            z-index: 2; /* Ensure it is above other elements on hover */
+        }
+
+        /* Anchor tag styles */
+        .nav-bar-top a {
+            text-decoration: none; /* Remove underline from links */
+            color: inherit; /* Inherit color from li */
+            display: block; /* Make the link fill the li */
+            padding: 10px; /* Match padding for better click area */
+        }
+        /* Style the table within the #map div */
+    </style>
+</head>
+<body>
+<nav class="hover-navbar">
+    <ul>
+        <li><a href="/" class="nav-bar-top">Home</a></li>
+        <li><a href="index" class="nav-bar-top">Churn Analysis</a></li>
+    </ul>
+</nav>
+<div class="container">
+    <h1 class="mb-2 bg-gradient-to-b from-amber-50 to-purple-500 bg-clip-text text-2xl font-bold text-transparent sm:mb-4 sm:text-5xl sm:leading-tight">Assurance Company Churn Predictor</h1>
+    <form method="post" class="mt-3 mb-3">
+        <div class="form-group">
+            <label for="user_input">Enter the details (e.g., "we are WAFA, what are the nearest assurance companies from 55, Bd Abdelmoumen, Casablanca, Grand Casablanca 20029 within a radius of 5km"):</label>
+            <textarea class="form-control" id="user_input" name="user_input" rows="4"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+    {% if nearest_result %}
+        <h3 class="mb-2 bg-gradient-to-b from-amber-50 to-purple-500 bg-clip-text text-2xl font-bold text-transparent sm:mb-4 sm:text-5xl sm:leading-tight">Our Nearest Assurance Agency</h3>
+        <p>{{ nearest_result }}</p>
+
+        <h3 class="mb-2 bg-gradient-to-b from-amber-50 to-purple-500 bg-clip-text text-2xl font-bold text-transparent sm:mb-4 sm:text-5xl sm:leading-tight">{{ surrounding_count }} Surrounding Assurance agencies Grouped by Company Name :</h3>
+        <div>
+            {{ grouped_counts | safe }}
+        </div>
+
+        <h3 class="mb-2 bg-gradient-to-b from-amber-50 to-purple-500 bg-clip-text text-2xl font-bold text-transparent sm:mb-4 sm:text-5xl sm:leading-tight">Map</h3>
+        <div id="map">
+            {{ map_html | safe }}
+        </div>
+
+        <a href="{{ url_for('download_file', surrounding_csv=surrounding_csv) }}" class="btn btn-success mt-3">Download data for surrounding companies</a>
+    {% endif %}
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+>>>>>>> 57f5436bd44cbb7a53adf53338d340eb8c5d4bcb
